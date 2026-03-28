@@ -1,8 +1,8 @@
 // services/etkinlikService.js
-import devreRepository from '../repository/devreRepository.js'
+import etkinlikRepository from '../repositories/etkinlikRepository.js'
 import AppError from '../utils/AppError.js'
 import { auditLog } from '../utils/auditlog.js'
-const devreService = {
+const EtkinlikService = {
 
     createEtkinlik: async (dto, user, ip) => {
         const data = {
@@ -23,23 +23,23 @@ const devreService = {
             })
         }
 
-        const devre = await devreRepository.create(data)
+        const etkinlik = await etkinlikRepository.create(data)
 
         auditLog({
             user,
             action: "CREATE_ETKINLIK",
             resource: "etkinlik",
-            resourceId: devre._id,
+            resourceId: etkinlik._id,
             ip,
             meta: { type: dto.type }
         })
 
-        return devre
+        return etkinlik
     },
 
     getAllEtkinlikler: async ({ page, limit }) => {
         const skip = (page - 1) * limit
-        const { etkinlikler, total } = await devreRepository.findAll({ skip, limit })
+        const { etkinlikler, total } = await etkinlikRepository.findAll({ skip, limit })
 
         return {
             etkinlikler,
@@ -50,18 +50,18 @@ const devreService = {
     },
 
     getUserEtkinlikleri: async (userId) => {
-        return await devreRepository.findByUserId(userId)
+        return await etkinlikRepository.findByUserId(userId)
     },
 
     deleteEtkinlik: async (etkinlikId, user, ip) => {
-        const etkinlik = await devreRepository.findById(etkinlikId)
+        const etkinlik = await etkinlikRepository.findById(etkinlikId)
         if (!etkinlik)
             throw new AppError("Etkinlik bulunamadı", 404, "NOT_FOUND")
 
         if (etkinlik.user._id.toString() !== user._id.toString())
             throw new AppError("Bu işlem için yetkiniz yok", 403, "FORBIDDEN")
 
-        await devreRepository.deleteById(etkinlikId)
+        await etkinlikRepository.deleteById(etkinlikId)
 
         auditLog({
             user,
@@ -73,7 +73,7 @@ const devreService = {
     },
 
     katilimciEkle: async (etkinlikId, user, ip) => {
-        const etkinlik = await devreRepository.findById(etkinlikId)
+        const etkinlik = await etkinlikRepository.findById(etkinlikId)
         if (!etkinlik)
             throw new AppError("Etkinlik bulunamadı", 404, "NOT_FOUND")
 
@@ -88,7 +88,7 @@ const devreService = {
         if (etkinlik.kontenjan && etkinlik.katilimcilar.length >= etkinlik.kontenjan)
             throw new AppError("Kontenjan doldu", 400, "CAPACITY_FULL")
 
-        const updated = await devreRepository.katilimciEkle(etkinlikId, user._id)
+        const updated = await etkinlikRepository.katilimciEkle(etkinlikId, user._id)
 
         auditLog({
             user,
@@ -125,4 +125,4 @@ const devreService = {
     }
 }
 
-export default devreService
+export default EtkinlikService
