@@ -6,7 +6,6 @@ import xss from "xss"
 export const noSqlSanitize = mongoSanitize({
     replaceWith: "_",
     onSanitize: ({ req, key }) => {
-        // import logger from '../utils/logger.js' ekle
         console.warn(`NoSQL injection attempt: key=${key}, ip=${req.ip}`)
     }
 })

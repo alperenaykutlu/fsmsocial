@@ -1,4 +1,4 @@
-// repositories/ekipRepository.js
+// repositories/devreRepository.js
 import Devre from "../models/devre/devre.js"
 
 class DevreRepository {
@@ -14,52 +14,65 @@ class DevreRepository {
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit)
-                .populate("ekipBasi", "name surname profilImg")
-                .populate("EkipBasiYardimcisi", "name surname profilImg")
-                .populate("devre", "devre"),
+                .populate("devreEkipBasi", "name surname profilImg")
+                .populate("devreEkipBasiYardimcisi", "name surname profilImg")
+                .populate("ekipler", "ekipAd ekipImg"),
             Devre.countDocuments()
         ])
         return { devreler, total }
     }
 
-    async findByDevreId(devreId) {
-        return await Devre.find({ devre: devreId })
-            .sort({ createdAt: -1 })
-            .populate("ekipBasi", "name surname profilImg")
-            .populate("EkipBasiYardimcisi", "name surname profilImg")
-    }
-
     async findById(id) {
         return await Devre.findById(id)
-            .populate("ekipBasi", "name surname profilImg")
-            .populate("EkipBasiYardimcisi", "name surname profilImg")
-            .populate("devre")
+            .populate("devreEkipBasi", "name surname profilImg")
+            .populate("devreEkipBasiYardimcisi", "name surname profilImg")
+            .populate("ekipler", "ekipAd ekipImg")
     }
 
-    async findByName(ekipAd) {
-        return await Devre.findOne({ ekipAd })
+    async findByName(devreName) {
+        return await Devre.findOne({ devreName })
     }
 
     async deleteById(id) {
         return await Devre.findByIdAndDelete(id)
     }
 
-
-
     async devreAdDegistir(devreId, yeniAd) {
         return await Devre.findByIdAndUpdate(
             devreId,
-            { $set: { devreAd: yeniAd } },
-            { new: true, runValidators: true }  // minlength kontrolü çalışsın
+            { $set: { devreName: yeniAd } },
+            { new: true, runValidators: true }
         )
     }
 
-    async devreEkle(devreId, ekipId) {
+    async devreEkipBasiDegistir(devreId, userId) {
+        return await Devre.findByIdAndUpdate(
+            devreId,
+            { $set: { devreEkipBasi: userId } },
+            { new: true }
+        )
+    }
+    async durumDegis(devreId,DevreType){
+        return await Devre.findByIdAndUpdate(devreId,
+            {$set:{devreType:DevreType}},
+            {new:true}
+        )
+    
+    }
+    async devreEkipBasiYardimciDegistir(devreId, userId) {
+        return await Devre.findByIdAndUpdate(
+            devreId,
+            { $set: { devreEkipBasiYardimcisi: userId } },
+            { new: true }
+        )
+    }
+
+    async ekipEkle(devreId, ekipId) {
         return await Devre.findByIdAndUpdate(
             devreId,
             {
-                $addToSet: { katilimcilar: ekipId },
-                $inc: { ekipSayi: 1 }
+                $addToSet: { ekipler: ekipId },
+                $inc: { ekipSayisi: 1 }
             },
             { new: true }
         )
@@ -69,20 +82,27 @@ class DevreRepository {
         return await Devre.findByIdAndUpdate(
             devreId,
             {
-                $pull: { katilimcilar: ekipId },
-                $inc: { ekipSayi: -1 }
+                $pull: { ekipler: ekipId },
+                $inc: { ekipSayisi: -1 }
             },
             { new: true }
         )
     }
 
     async ekipSayisiGuncelle(devreId) {
-        // katilimcilar array'inden otomatik hesapla
         const devre = await Devre.findById(devreId)
         if (!devre) return null
         return await Devre.findByIdAndUpdate(
             devreId,
-            { $set: { ekipSayi: devre.katilimcilar.length } },
+            { $set: { ekipSayisi: devre.ekipler.length } },
+            { new: true }
+        )
+    }
+
+    async izciSayisiGuncelle(devreId, sayi) {
+        return await Devre.findByIdAndUpdate(
+            devreId,
+            { $inc: { izciSayisi: sayi } },  // +1 veya -1 gönder
             { new: true }
         )
     }

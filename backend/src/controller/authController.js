@@ -11,7 +11,10 @@ const AuthController={
         const result=await AuthService.login(req.body,req.ip)
         res.status(201).json(result)
     }),
-
+  profilTamamla: asyncHandler(async (req, res) => {
+        const result = await AuthService.profilTamamla(req.user._id, req.body, req.ip)
+        res.status(200).json(result)
+    }),
     refresh: asyncHandler(async(req,res)=>{
         const {refreshToken}=req.body
         const tokens=await AuthService.refreshTok(refreshToken)

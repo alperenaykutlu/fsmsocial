@@ -6,6 +6,84 @@ import { generateAccessToken, refreshToken, verifyAccessToken, verifyRefreshToke
 
 
 const AuthService = {
+
+    profilTamamla: async (userId, dto, ip) => {
+        const user = await User.findById(userId)
+        if (!user)
+            throw new AppError("Kullanıcı bulunamadı", 404, "NOT_FOUND")
+
+        if (user.profilTamamlandi)
+            throw new AppError("Profil zaten tamamlanmış", 400, "ALREADY_COMPLETED")
+
+        const mevcutTC = await User.findOne({ tckimlik: dto.tckimlik })
+        if (mevcutTC)
+            throw new AppError("Bu TC Kimlik zaten kayıtlı", 400, "DUPLICATE_ENTRY")
+
+        user.tckimlik = dto.tckimlik
+        user.dogumYeri = dto.dogumYeri
+        user.dogumTarihi = dto.dogumTarihi
+        user.adres = dto.adres
+        user.nufusaKayitliOlduguSehir = dto.nufusaKayitliOlduguSehir
+        user.telNO = dto.telNO
+        user.kanGrubu = dto.kanGrubu
+        user.cinsiyet = dto.cinsiyet
+        user.tip = dto.tip ?? KullaniciTipi.IZCI
+
+        // Opsiyonel kişisel
+        user.evtelNO = dto.evtelNO ?? ""
+        user.nufusaKayitliOlduguIlce = dto.nufusaKayitliOlduguIlce ?? ""
+        user.nufusaKayitliOlduguKoy = dto.nufusaKayitliOlduguKoy ?? ""
+
+        // Opsiyonel sağlık
+        user.hastaliklar = dto.hastaliklar ?? ""
+        user.ameliyatBilgisi = dto.ameliyatBilgisi ?? ""
+        user.alerji = dto.alerji ?? ""
+        user.ilaclar = dto.ilaclar ?? ""
+        user.kronikRahatsizlik = dto.kronikRahatsizlik ?? ""
+        user.engelDurum = dto.engelDurum ?? ""
+
+        // Opsiyonel aile
+        user.anneAd = dto.anneAd ?? ""
+        user.babaAd = dto.babaAd ?? ""
+        user.anneTel = dto.anneTel ?? ""
+        user.babaTel = dto.babaTel ?? ""
+        user.anneSag = dto.anneSag ?? null
+        user.babaSag = dto.babaSag ?? null
+        user.anneBabaEvliMi = dto.anneBabaEvliMi ?? null
+        user.anneMeslek = dto.anneMeslek ?? ""
+        user.babaMeslek = dto.babaMeslek ?? ""
+        user.kardesSayi = dto.kardesSayi ?? null
+
+        // Opsiyonel okul / iş
+        user.hangiOkuldanGeldi = dto.hangiOkuldanGeldi ?? ""
+        user.hangiSinifta = dto.hangiSinifta ?? ""
+        user.okulNo = dto.okulNo ?? null
+        user.sevilenDers = dto.sevilenDers ?? ""
+        user.sevilmeyenDers = dto.sevilmeyenDers ?? ""
+        user.istedigiMeslek = dto.istedigiMeslek ?? ""
+        user.calisiyorMu = dto.calisiyorMu ?? false
+        user.isNe = dto.isNe ?? ""
+        user.odasiVarMi = dto.odasiVarMi ?? false
+
+        // Opsiyonel ilgi / yetenek
+        user.hobi = dto.hobi ?? ""
+        user.yetenek = dto.yetenek ?? ""
+        user.izcilikGecmisi = dto.izcilikGecmisi ?? ""
+
+        user.profilTamamlandi = true
+
+        await user.save()
+
+        auditLog({
+            user,
+            action: "PROFIL_TAMAMLA",
+            resource: "user",
+            resourceId: user._id,
+            ip
+        })
+
+        return { profilTamamlandi: true }
+    },
     register: async (dto, ip) => {
         const existingUsername = await User.findOne({
             username: dto.username
@@ -46,32 +124,32 @@ const AuthService = {
             await user.save()
             auditLog({ user, action: "LOGIN", resource: "user", resourceId: user._id, ip })
 
-            return{
+            return {
                 accessToken,
                 refresh,
-                            user: { id: user._id, username: user.username, profileImg: user.profileImg }
+                user: { id: user._id, username: user.username, profileImg: user.profileImg }
 
             }
         },
-        refreshTok:async(token)=>{
-            if(!token) throw new AppError("Refresh Token Geçersiz",401,"MISSING_TOKEN")
-            const decoded=verifyRefreshToken(token)
-        const user=await User.findById(decoded.userID)
+    refreshTok: async (token) => {
+        if (!token) throw new AppError("Refresh Token Geçersiz", 401, "MISSING_TOKEN")
+        const decoded = verifyRefreshToken(token)
+        const user = await User.findById(decoded.userID)
 
-        if(!user || user.refreshToken!==token)
-            throw new AppError("Refresh Token Geçersiz",401,"INVALID_TOKEN")
+        if (!user || user.refreshToken !== token)
+            throw new AppError("Refresh Token Geçersiz", 401, "INVALID_TOKEN")
 
-        const newAccessToken=generateAccessToken(user._id,user.tip)
-        const newRefreshToken=refreshToken(user._id)
+        const newAccessToken = generateAccessToken(user._id, user.tip)
+        const newRefreshToken = refreshToken(user._id)
 
-        user.refreshToken=newRefreshToken
+        user.refreshToken = newRefreshToken
 
         await user.save()
-        return {accessToken:newAccessToken,refreshToken:newRefreshToken}
-        },
-        logout:async (userId)=>{
-            await User.findByIdAndUpdate(userId,{refreshToken:null})
-        }
+        return { accessToken: newAccessToken, refreshToken: newRefreshToken }
+    },
+    logout: async (userId) => {
+        await User.findByIdAndUpdate(userId, { refreshToken: null })
+    }
 }
 
 export default AuthService
