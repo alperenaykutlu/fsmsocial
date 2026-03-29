@@ -1,4 +1,3 @@
-import { use } from "react";
 import User from "../models/user/user.js";
 import AppError from "../utils/AppError.js";
 import { auditLog } from "../utils/auditlog.js";
@@ -97,25 +96,28 @@ const AuthService = {
         const user = new User({ ...dto, profileImg })
         await user.save()
 
-        user.refreshToken = refreshToken
+        const access = generateAccessToken(user._id, user.tip);
+        const refresh = refreshToken(user._id);
+
+        user.refreshToken = refresh;
         await user.save()
 
         auditLog({
             user, action: "REGISTER", resource: "user", resourceID: user._id, ip
         })
         return {
-            accessToken,
-            refreshToken,
+            accessToken: access,
+            refreshToken: refresh,
             user: { id: user._id, username: user.username, profileImg: user.profileImg }
         }
     },
     login:
-        async ({ email, password }, ip) => {
+        async ({ username, password }, ip) => {
             const user = await User.findOne({ username })
-            if (!user) throw new AppError("Eposta veya şifre hatalı", 401, "INVALID_CREDENTIALS")
+            if (!user) throw new AppError("Kullanıcı adı veya şifre hatalı", 401, "INVALID_CREDENTIALS")
 
             const isCorrect = await user.comparePassword(password)
-            if (!isCorrect) throw new AppError("Eposta veya şifre hatalı", 401, "INVALID_CREDENTIALS")
+            if (!isCorrect) throw new AppError("Kullanıcı adı veya şifre hatalı", 401, "INVALID_CREDENTIALS")
 
             const access = generateAccessToken(user._id, user.tip)
             const refresh = refreshToken(user._id)
@@ -125,8 +127,8 @@ const AuthService = {
             auditLog({ user, action: "LOGIN", resource: "user", resourceId: user._id, ip })
 
             return {
-                accessToken,
-                refresh,
+                accessToken: access,
+                refreshToken: refresh,
                 user: { id: user._id, username: user.username, profileImg: user.profileImg }
 
             }

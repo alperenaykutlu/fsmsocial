@@ -29,7 +29,7 @@ class EtkinlikRepository {
         )
     }
     async katilimciCikar(etkinilkID, userId) {
-        return await Etkinlik.findByIdAndDelete(
+        return await Etkinlik.findByIdAndUpdate(
             etkinilkID,
             { $pull: { katilimcilar: userId } },
             { new: true }
@@ -40,15 +40,13 @@ class EtkinlikRepository {
         return await Etkinlik.countDocuments({ type })
 
     }
-static async updateRsvp(postId, userId, status) {
-  const addField    = status === 'going' ? 'attendees' : 'notAttendees';
-  const removeField = status === 'going' ? 'notAttendees' : 'attendees';
-
-  return Post.findByIdAndUpdate(postId, {
-    $addToSet: { [addField]: userId },
-    $pull:     { [removeField]: userId },
-  }, { new: true });
-}
+    async updateRsvp(postId, userId, status) {
+        const updateQuery = status === "going" 
+            ? { $addToSet: { katilimcilar: userId } } 
+            : { $pull: { katilimcilar: userId } };
+      
+        return await Etkinlik.findByIdAndUpdate(postId, updateQuery, { new: true });
+    }
 
 }
 export default new EtkinlikRepository()

@@ -32,7 +32,7 @@ describe('EtkinlikRepository Tests', () => {
     const etkinlik = new Etkinlik({
       name: "Orman Kampı",
       caption: "Hafta sonu",
-      type: "etkinlik",
+      type: "Kamp",
       user: user._id
     });
     await etkinlik.save();
@@ -40,7 +40,7 @@ describe('EtkinlikRepository Tests', () => {
     // 3. Attempt to update RSVP
     // This will throw ReferenceError: Post is not defined because the method uses "Post" instead of "Etkinlik"
     // Also it's a static method wrapped inside an instance export!
-    const result = await EtkinlikRepository.constructor.updateRsvp(etkinlik._id.toString(), user._id.toString(), 'going');
+    const result = await EtkinlikRepository.updateRsvp(etkinlik._id.toString(), user._id.toString(), 'going');
 
     // 4. Expect success
     expect(result.katilimcilar).toContainEqual(user._id);

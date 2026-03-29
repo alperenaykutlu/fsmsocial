@@ -1,6 +1,6 @@
 import Notify from "../models/notification/notification.js";
-import {getIO} from "../config/socket.config.js."
-import {user} from '../models/user/user.js'
+import { getIO } from "../config/socket.config.js";
+import User from '../models/user/user.js';
 class NotificationRepository{
     static async bulkCreate({targets,payload,actorID}){
         const devreIDs=[]
@@ -11,14 +11,16 @@ class NotificationRepository{
             if(type==='devre') devreIDs.push(id)
                 if(type==='ekip') ekipIDs.push(id)
         }
-    const users= await user.find({
-        $or:[
-            ...NotificationRepository(devreIDs.length?[{devreIDs:{$in:devreIDs}}]:[]),
-            ...NotificationRepository(ekipIDs.length?[{ekipIDs:{$in:ekipIDs}}]:[])
+        const conditions = [];
+        if (devreIDs.length) conditions.push({ devreID: { $in: devreIDs } });
+        if (ekipIDs.length) conditions.push({ Ekip: { $in: ekipIDs } });
 
-        ],
-        _id:{$ne:actorID}
-    }).select('_id')
+        if (!conditions.length) return;
+
+        const users = await User.find({
+            $or: conditions,
+            _id: { $ne: actorID }
+        }).select('_id')
 if(!users.length) return    
 const docs=users.map((u)=>({
    recipientID: u._id,

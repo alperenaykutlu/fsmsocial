@@ -31,20 +31,18 @@ const DevreService = {
         return yeniDevre
     },
 
-    devreDurumDegis:async({
-        devreId,durum
-    })=>{
-        const devre=devreRepository.findById(devreId)
-        if(!devre) return new AppError("DEVRE BULUNAMADI",404,"NOT_FOUND")
+    devreDurumDegis: async ({ devreId, durum }, user, ip) => {
+        const devre = await devreRepository.findById(devreId)
+        if(!devre) throw new AppError("DEVRE BULUNAMADI",404,"NOT_FOUND")
 
-        const guncellendi=devreRepository.durumDegis(devreId,durum)
-             auditLog({
+        const guncellendi = await devreRepository.durumDegis(devreId, durum)
+        auditLog({
             user,
             action: "UPDATE_DEVRE_DURUM",
             resource: "devre",
             resourceId: devreId,
             ip,
-            meta: { eskiType: devre.devreType, yeniType }
+            meta: { eskiType: devre.devreType, yeniType: durum }
         })
 
         return guncellendi

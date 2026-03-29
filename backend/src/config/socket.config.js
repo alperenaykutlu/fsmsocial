@@ -48,4 +48,4 @@ const getIO=()=>{
     if(!io) new AppError('Socket.IO henüz initialize edilmedi',404,'INITALIZED')
         return io
 }
-module.exports={initSocket,getIO}
+export { initSocket, getIO };
