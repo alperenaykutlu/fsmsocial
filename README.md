@@ -38,17 +38,14 @@ Bu mimari sayesinde proje, "Domain-Driven Design (DDD)" prensiplerine yakın, te
 - **Şifreleme ve Auth Katmanı**: JWT (`jsonwebtoken`) ve Parola Kriptolama (`bcryptjs/bcrypt`)
 - **Validasyon**: `zod` ve `joi`
 - **Loglama ve Task Yönetimi**: `winston` (İstek/Hata logları) ve `cron` (Zamanlanmış görevler)
+- **Gerçek Zamanlı İletişim**: `socket.io` (Anlık bildirimler, eşzamanlı sohbet ve etkinlik canlı akışı)
+- **Önbellekleme (Caching)**: `redis` (Sık okunan verilerin önbelleklenerek veritabanı performansının artırılması)
 ### Mobil İlk Yüz (Frontend - `/social`)
 - **Çatı**: React Native & Expo (v54)
 - **Navigasyon**: Expo Router & React Navigation
 - **Durum (State) Yönetimi**: Zustand
 - **Veri Tipi Güvenliği**: TypeScript
 - **Yerel Depolama**: AsyncStorage 
----
-## 🔮 Gelecekte Eklenecek Teknolojiler (Roadmap)
-Sistemin gerçek zamanlı yeteneklerini ve genel erişim hızını artırmak amacıyla planlanmış geliştirmeler:
-- **Socket.io**: Bildirimler (Notification Modelinin tetikleri), sohbet özellikleri ve etkinlik katılımlarının canlı yayınlanması için eklenecektir.
-- **Redis (Kayıt Önbellekleme)**: Database trafiğini azaltmak için sık okunan (Read-heavy) sorguların (örneğin Aktif Ekip ve Devre listeleri) önbellekte tutulması için sisteme entegre edilecektir.
 ---
 ## 💻 Kurulum ve Geliştirme Ortamı
 **Adım 1: Projenin Klonlanması**
