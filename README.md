@@ -1,41 +1,48 @@
 # FSMSocial - İzci ve Sosyal Paylaşım Uygulaması
-FSMSocial, izci grupları ve kullanıcıların bir araya gelerek etkinlikler düzenleyebileceği, profillerini yönetebileceği ve takım/ekip süreçlerini takip edebileceği tam yığın (full-stack) bir mobil uygulamadır. 
-Proje iki ana bileşenden oluşmaktadır:
-- **Frontend (`/social`)**: React Native ve Expo kullanılarak geliştirilmiştir.
-- **Backend (`/backend`)**: Node.js, Express.js ve MongoDB(Mongoose) ile geliştirilmiştir.
-## 🚀 Özellikler
-- **Kullanıcı Yönetimi**: Cihaz kayıtları, JWT tabanlı giriş işlemleri.
-- **Profil Yönetimi**: Kullanıcı profili güncelleme ve **Cloudinary** entegrasyonu ile fotoğraf yükleme.
-- **Etkinlik & Durum Paylaşımı**: Kullanıcıların etkinliklere kayıt olması, onay/red durumları ve durum paylaşımları.
-- **Ekip ve Takım Yönetimi**: İzcilik ekipleri (troops), ekip liderleri ve takım süreçlerini yönetmeyi sağlayan DDD (Domain-Driven Design) prensiplerine uygun servisler.
+FSMSocial, izci grupları ve kullanıcıların bir araya gelerek etkinlikler düzenleyebileceği, profillerini yönetebileceği ve takım/ekip/devre süreçlerini takip edebileceği tam yığın (full-stack) bir mobil uygulamadır. 
+Projenin mimarisi, izcilik teşkilat yapısındaki "Ekipler (Troops)", "Devreler" ve "Liderler" arasındaki ilişkiyi DDD (Domain-Driven Design) mantığına uygun bir şekilde yönetebilmek üzere tasarlanmıştır.
+## 🚀 Öne Çıkan Özellikler
+- **Kullanıcı & Cihaz Yönetimi**: JWT tabanlı güvenli giriş ve yetkilendirme sistemi.
+- **Profil ve Medya Yönetimi**: **Cloudinary** entegrasyonu ile kesintisiz ve güvenli profil/fotoğraf yükleme altyapısı.
+- **Etkinlik & Sosyal Paylaşım**: Kullanıcıların etkinlik detaylarını görebilmesi, etkinliklere kayıt olup onay/red durumlarını takip edebilmesi ve durum paylaşımları yapabilmesi.
+- **Ekip ve Devre Hiyerarşisi**: Ekip repo servisi ve devre yönetimi standartları ile kullanıcıların takımlar arası ilişkilerinin yönetilmesi.
+---
 ## 🛠️ Kullanılan Teknolojiler
-### Frontend (Mobil)
-- **React Native & Expo**: Çapraz platform mobil uygulama geliştirme.
-- **Zustand**: Global durum (state) yönetimi.
-- **Zod & React Hook Form**: Form validasyonları (varsa).
-- **Expo Router**: Sayfalar arası geçiş ve yönlendirmeler.
-### Backend
-- **Node.js & Express.js**: RESTful API altyapısı.
-- **MongoDB & Mongoose**: NoSQL veritabanı yönetimi ve ODM.
-- **Cloudinary**: Medya ve görsel yönetimi.
-- **Bcrypt.js & JSONWebToken (JWT)**: Parola şifreleme ve yetkilendirme işlemleri.
-### 🔮 Gelecekte Eklenecek Teknolojiler (Roadmap)
-- **Socket.io**: Kullanıcılara anlık bildirimler, eşzamanlı mesajlaşma ve duyuru iletimi sağlamak için eklenecektir.
-- **Redis**: Sık erişilen verilerin önbelleklenmesi (caching) ve uygulamanın genel performansının artırılması amacıyla entegre edilecektir.
+Projemiz, modern web ve mobil standartlarında güncel kütüphanelerle geliştirilmiştir.
+### Frontend (Mobil Uygulama - `/social`)
+- **React Native & Expo (v54)**: Uygulamanın çapraz platform (iOS & Android) omurgası.
+- **Expo Router & React Navigation**: Uygulama içi akıcı yönlendirmeler ve sekmeler (Bottom Tabs) için.
+- **Zustand**: Sürdürülebilir ve hafif global state (durum) yönetimi.
+- **TypeScript**: Hataları henüz yazım aşamasındayken yakalamak ve tip güvenliği sağlamak için.
+- **AsyncStorage**: Cihaz üzerinde token vb. verilerin güvenli ve kalıcı olarak tutulması için.
+- **Expo Image & Picker**: Uygulama içi yüksek performanslı görsel optimizasyonu ve resim seçimi.
+### Backend (REST API - `/backend`)
+- **Node.js & Express.js**: Sunucu tabanlı API arayüzü.
+- **MongoDB & Mongoose**: Esnek (NoSQL) veritabanı yapısı ve ORM çözümü.
+- **Güvenlik Katmanı**: `helmet`, `express-rate-limit`, `express-mongo-sanitize` ve `xss` kullanılarak uygulamanın temel siber saldırılara (DDoS, XSS, NoSQL Injection) karşı korunması.
+- **Kimlik Doğrulama**: `jsonwebtoken` (JWT) ve `bcryptjs` aracılığıyla şifre hashlama ve kullanıcı yetkilendirme.
+- **Validasyon**: Gelen HTTP isteklerindeki body/params doğrulamaları için `zod` ve `joi`.
+- **Loglama ve Görev Yönetimi**: `winston` ile API isteklerinin hata takip amaçlı kayıt altına alınması, `cron` ile arka plan ve zamanlanmış görev yönetimi.
+---
+## 🔮 Gelecekte Eklenecek Teknolojiler (Roadmap)
+Projenin ölçeği büyüdüğünde ve etkileşim arttığında sisteme entegre edilmesi planlanan hedefler:
+- **Socket.io**: Kullanıcılara yeni etkinlik onayları, ekip atamaları veya sistem duyuruları geldiğinde anlık (real-time) bildirimler verebilmek ve eşzamanlı bir haberleşme/mesajlaşma ağı kurmak.
+- **Redis (Caching)**: Veritabanı sorgularının yükünü hafifletmek adına çok sık erişilen verilerin (Örn: aktif ekiplerin listesi, genel duyurular) milisaniyelik hızlarda RAM üzerinden sunulmasını sağlamak ve performansı uç noktaya taşımak.
 ---
 ## 💻 Kurulum ve Çalıştırma
-### 1. Depoyu Klonlayın
+### 1. Deponun Sisteme Kurulması
+Projeyi Github üzerinden klonlayın:
 ```bash
 git clone https://github.com/alperenaykutlu/fsmsocial.git
 cd fsmsocial
 ```
-### 2. Backend Kurulumu ve Çalıştırılması
-`backend` klasörüne giderek gerekli bağımlılıkları indirin:
+### 2. Backend Geliştirme Ortamı
+API sunucusunu başlatmak için ilgili klasöre gidip paketleri indirin:
 ```bash
 cd backend
 npm install
 ```
-`backend` dizini içerisine bir `.env` dosyası oluşturun ve aşağıdaki ortam değişkenlerini ayarlayın:
+`backend` dizininde bir `.env` dosyası oluşturarak aşağıdaki ortam parametrelerini projenize göre girin:
 ```env
 PORT=5000
 MONGODB_URI=sizin_mongodb_baglanti_dizginiz
@@ -44,38 +51,18 @@ CLOUDINARY_CLOUD_NAME=cloudinary_adiniz
 CLOUDINARY_API_KEY=api_anaharitniz
 CLOUDINARY_API_SECRET=gizli_api_anahtariniz
 ```
-Sunucuyu başlatın:
+Sunucuyu ayağa kaldırın:
 ```bash
 npm run dev
-# veya
-nodemon index.js
 ```
-### 3. Frontend (Mobil App) Kurulumu ve Çalıştırılması
-Ayrı bir terminal açıp `social` klasörüne gidin:
+### 3. Frontend (Mobil) Geliştirme Ortamı
+Yeni bir terminal/CMD penceresinde `social` dizinine ilerleyin:
 ```bash
 cd fsmsocial/social
 npm install
 ```
-Expo geliştirme sunucusunu başlatın:
+Expo sunucusunu başlatarak kodu derleyin:
 ```bash
 npx expo start
 ```
-Açılan terminaldeki QR kodu Expo Go mobil uygulamasından okutarak veya bir emülatör (Android/iOS) başlatarak uygulamayı test edebilirsiniz.
----
-## 📂 Proje Dizini
-```plaintext
-fsmsocial/
-├── backend/ # Node.js ve Express tabanlı REST API
-│ ├── src/ 
-│ ├── index.js
-│ ├── .env
-│ └── package.json
-├── social/ # React Native & Expo Mobil Uygulaması
-│ ├── app/ # Expo Router sayfaları
-│ ├── components/ # Yeniden kullanılabilir React bileşenleri
-│ ├── store/ # Zustand state yönetim dosyaları
-│ └── package.json
-└── README.md
-```
-## 📜 Lisans
-Bu proje geliştirme aşamasındadır ve kapalı/özel depodur. Her hakkı saklıdır.
+> Terminalde beliren QR kodu Expo Go (iOS/Android) uygulaması ile cihazınızda okutabilir veya `a` / `i` tuşları ile sanal cihaz emülatörü üzerinden projenizi çalıştırabilirsiniz.
