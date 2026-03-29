@@ -1,5 +1,8 @@
 import mongoose from "mongoose"
+const { Schema } = mongoose; // ← ekle
+
 const ekipSchema = new mongoose.Schema({
+
     ekipAd: {
         type: String,
         unique: true,
@@ -16,23 +19,23 @@ const ekipSchema = new mongoose.Schema({
         default: 0
     },
     ekipBasi: {
-        type: mongoose.Schema.Types.User,
+        type: Schema.Types.ObjectId,
         ref: "user",
         default: null,
         unique: true
     },
     EkipBasiYardimcisi: {
-        type: mongoose.Schema.Types.User,
+        type: Schema.Types.ObjectId,
         ref: "user",
         default: null,
         unique: true
     },
     devre: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "devre",
         required: true
     }
-    
+
 })
 const Ekip = mongoose.model("ekip", ekipSchema)
 

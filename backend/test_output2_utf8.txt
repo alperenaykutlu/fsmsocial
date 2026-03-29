@@ -1,0 +1,73 @@
+﻿
+[1m[46m RUN [49m[22m [36mv4.1.2 [39m[90mC:/Users/alper/fsmeio/fsmsocial/backend[39m
+
+node.exe : (node:21952) [MONGOOSE] Warning: mongoose: the `new` option for `findOneAndUpdate()` and `findOneAndReplace()` is deprecated. Use `returnDocument: 'after'` instead.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:21952) [M...fter'` instead.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32mÔ£ô[39m src/repository/__tests__/etkinlikRepository.test.js[2m > [22mEtkinlikRepository Tests[2m > [22mupdateRsvp should successfully mark user as attending and save to DB[32m 85[2mms[22m[39m
+ [31m├ù[39m src/service/__tests__/authService.test.js[2m > [22mAuthService Tests[2m > [22mRegister should successfully return tokens without crashing[32m 88[2mms[22m[39m
+[31m   ÔåÆ secretOrPrivateKey must have a value[39m
+ [31m├ù[39m src/service/__tests__/authService.test.js[2m > [22mAuthService Tests[2m > [22mLogin should successfully find a user by their username and return tokens[32m 67[2mms[22m[39m
+[31m   ÔåÆ Kullan─▒c─▒ ad─▒ veya ┼şifre hatal─▒[39m
+
+[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m[1m[41m Failed Suites 1 [49m[22m[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m
+
+[41m[1m FAIL [22m[49m src/service/__tests__/devreService.test.js[2m [ src/service/__tests__/devreService.test.js ][22m
+[31m[1mTypeError[22m: Invalid value for schema path `ekipBasi.type`, got value "undefined"[39m
+[90m [2mÔØ»[22m Schema.add node_modules/mongoose/lib/schema.js:[2m807:13[22m[39m
+[90m [2mÔØ»[22m Schema.add node_modules/mongoose/lib/schema.js:[2m865:12[22m[39m
+[90m [2mÔØ»[22m new Schema node_modules/mongoose/lib/schema.js:[2m147:10[22m[39m
+[36m [2mÔØ»[22m src/models/ekip/ekip.js:[2m2:20[22m[39m
+    [90m  1|[39m [35mimport[39m mongoose [35mfrom[39m [32m"mongoose"[39m
+    [90m  2|[39m [35mconst[39m ekipSchema [33m=[39m [35mnew[39m mongoose[33m.[39m[33mSchema[39m({
+    [90m   |[39m                    [31m^[39m
+    [90m  3|[39m     ekipAd[33m:[39m {
+    [90m  4|[39m         type[33m:[39m [33mString[39m[33m,[39m
+[90m [2mÔØ»[22m src/repository/ekipRepository.js:[2m2:1[22m[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/3]ÔÄ»[22m[39m
+
+
+[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m[1m[41m Failed Tests 2 [49m[22m[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m
+
+[41m[1m FAIL [22m[49m src/service/__tests__/authService.test.js[2m > [22mAuthService Tests[2m > [22mRegister should successfully return tokens without crashing
+[31m[1mError[22m: secretOrPrivateKey must have a value[39m
+[90m [2mÔØ»[22m Object.module.exports [as sign] node_modules/jsonwebtoken/sign.js:[2m111:20[22m[39m
+[36m [2mÔØ»[22m generateAccessToken src/utils/tokenHelper.js:[2m4:9[22m[39m
+    [90m  2|[39m
+    [90m  3|[39m [35mexport[39m [35mconst[39m generateAccessToken [33m=[39m (userID[33m,[39m role) [33m=>[39m
+    [90m  4|[39m     jwt.sign({ userID: userID, role }, process.env.JWT_SECRET, { expirÔÇĞ
+    [90m   |[39m         [31m^[39m
+    [90m  5|[39m
+    [90m  6|[39m [35mexport[39m [35mconst[39m refreshToken [33m=[39m (userID) [33m=>[39m
+[90m [2mÔØ»[22m Object.register src/service/authService.js:[2m99:43[22m[39m
+[90m [2mÔØ»[22m src/service/__tests__/authService.test.js:[2m29:20[22m[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/3]ÔÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/service/__tests__/authService.test.js[2m > [22mAuthService Tests[2m > [22mLogin should successfully find a user by their username and return tokens
+[31m[1mError[22m: Kullan─▒c─▒ ad─▒ veya ┼şifre hatal─▒[39m
+[36m [2mÔØ»[22m Object.login src/service/authService.js:[2m117:30[22m[39m
+    [90m115|[39m         [35masync[39m ({ username[33m,[39m password }[33m,[39m ip) [33m=>[39m {
+    [90m116|[39m             [35mconst[39m user [33m=[39m [35mawait[39m [33mUser[39m[33m.[39m[34mfindOne[39m({ username })
+    [90m117|[39m             if (!user) throw new AppError("Kullan─▒c─▒ ad─▒ veya ┼şifre haÔÇĞ
+    [90m   |[39m                              [31m^[39m
+    [90m118|[39m
+    [90m119|[39m             [35mconst[39m isCorrect [33m=[39m [35mawait[39m user[33m.[39m[34mcomparePassword[39m(password)
+[90m [2mÔØ»[22m src/service/__tests__/authService.test.js:[2m57:20[22m[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[22m[39m
+[31m[1mSerialized Error:[22m[39m [90m{ statusCode: 401, status: 'fail', isOperational: true, code: 'INVALID_CREDENTIALS' }[39m
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/3]ÔÄ»[22m[39m
+
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 12:44:55
+[2m   Duration [22m 1.27s[2m (transform 178ms, setup 0ms, import 796ms, tests 1.37s, environment 0ms)[22m
+
