@@ -11,7 +11,6 @@ const ekipSchema = new mongoose.Schema({
     },
     ekipImg: {
         type: String,
-        unique: true,
         default: ""
     },
     izciSayi: {
@@ -22,14 +21,18 @@ const ekipSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: "user",
         default: null,
-        unique: true
+        sparse: true
     },
     EkipBasiYardimcisi: {
         type: Schema.Types.ObjectId,
         ref: "user",
         default: null,
-        unique: true
+        sparse: true
     },
+    katilimcilar: [{
+        type: Schema.Types.ObjectId,
+        ref: "user"
+    }],
     devre: {
         type: Schema.Types.ObjectId,
         ref: "devre",

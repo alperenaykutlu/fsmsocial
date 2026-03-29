@@ -27,18 +27,14 @@ const devreSchema = new mongoose.Schema({
         ref: "ekip"
     }],
     devreEkipBasi: {
-        type: mongoose.Schema.Types.ObjectId, // Types.User yok, ObjectId olmalı
+        type: mongoose.Schema.Types.ObjectId,
         ref: "user",
-        default: null,
-        unique: true,
-        sparse: true                          // unique + null birden fazla kayıt için
+        default: null
     },
     devreEkipBasiYardimcisi: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",
-        default: null,
-        unique: true,
-        sparse: true
+        default: null
     }
 }, { timestamps: true })
 

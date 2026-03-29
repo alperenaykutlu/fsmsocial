@@ -115,7 +115,7 @@ const AuthService = {
     if (user.profilTamamlandi)
       throw new AppError("Profil zaten tamamlanmış", 400, "ALREADY_COMPLETED");
 
-    const mevcutTC = await User.findOne({ tckimlik: dto.tckimlik });
+    const mevcutTC = await User.findOne({ tckimlik: dto.tckimlik, _id: { $ne: userId } });
     if (mevcutTC)
       throw new AppError("Bu TC Kimlik zaten kayıtlı", 400, "DUPLICATE_ENTRY");
 

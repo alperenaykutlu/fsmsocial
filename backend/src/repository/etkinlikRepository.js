@@ -5,8 +5,7 @@ class EtkinlikRepository {
         const etkinlik = new Etkinlik(data)
         return await etkinlik.save()
     }
-    async findall({ ekip, limit = 20, page = 1 }) {
-        const skip = (page - 1) * limit;
+    async findall({ ekip, limit = 20, skip = 0 }) {
         const filter = ekip ? { ekip } : {};
 
         const [etkinlikler, total] = await Promise.all([

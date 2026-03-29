@@ -101,7 +101,10 @@ const EkipService = {
         // Aynı kişi başka ekibin başı mı?
         const mevcutEkip = await ekipRepository.findAll({ skip: 0, limit: 9999 })
         const baskaEkipBasi = mevcutEkip.ekipler
-            .some(e => e.ekipBasi?.toString() === userId && e._id.toString() !== ekipId)
+            .some(e => {
+                const basiId = e.ekipBasi?._id?.toString() || e.ekipBasi?.toString();
+                return basiId === userId && e._id.toString() !== ekipId;
+            })
         if (baskaEkipBasi)
             throw new AppError("Bu kullanıcı zaten başka bir ekibin başı", 400, "CONFLICT")
 
@@ -124,7 +127,8 @@ const EkipService = {
         if (!ekip)
             throw new AppError("Ekip bulunamadı", 404, "NOT_FOUND")
 
-        if (ekip.ekipBasi?.toString() === userId)
+        const basiId = ekip.ekipBasi?._id?.toString() || ekip.ekipBasi?.toString()
+        if (basiId === userId)
             throw new AppError("Ekip başı, yardımcı olamaz", 400, "CONFLICT")
 
         const guncellendi = await ekipRepository.ekipBasiYardimciDegistir(ekipId, userId)
@@ -176,10 +180,13 @@ const EkipService = {
             throw new AppError("Bu izci ekipte değil", 400, "NOT_FOUND")
 
         // Ekip başı veya yardımcı çıkarılamaz
-        if (ekip.ekipBasi?.toString() === izciId)
-            throw new AppError("Ekip başı ekipten çıkarılamaz", 400, "CONFLICT")
-        if (ekip.EkipBasiYardimcisi?.toString() === izciId)
-            throw new AppError("Ekip başı yardımcısı ekipten çıkarılamaz", 400, "CONFLICT")
+        const basiId = ekip.ekipBasi?._id?.toString() || ekip.ekipBasi?.toString()
+        if (basiId === izciId)
+            throw new AppError("Ekip başı çıkarılamaz", 400, "CONFLICT")
+
+        const yardimciId = ekip.EkipBasiYardimcisi?._id?.toString() || ekip.EkipBasiYardimcisi?.toString()
+        if (yardimciId === izciId)
+            throw new AppError("Ekip başı yardımcısı çıkarılamaz", 400, "CONFLICT")
 
         const guncellendi = await ekipRepository.izciCikar(ekipId, izciId)
 

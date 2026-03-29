@@ -207,9 +207,13 @@ const userSchema = new mongoose.Schema({
         default: null
     },
     refreshToken: {
-    type: String,
-    default: null
-}
+        type: String,
+        default: null
+    },
+    profilTamamlandi: {
+        type: Boolean,
+        default: false
+    }
 
 })
 

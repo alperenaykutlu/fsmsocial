@@ -116,7 +116,8 @@ const DevreService = {
         if (!devre)
             throw new AppError("Devre bulunamadı", 404, "NOT_FOUND")
 
-        if (devre.devreEkipBasiYardimcisi?.toString() === userId)
+        const yardimciId = devre.devreEkipBasiYardimcisi?._id?.toString() || devre.devreEkipBasiYardimcisi?.toString()
+        if (yardimciId === userId)
             throw new AppError("Bu kullanıcı zaten devre ekip başı yardımcısı", 400, "CONFLICT")
 
         const guncellendi = await devreRepository.devreEkipBasiDegistir(devreId, userId)
@@ -139,7 +140,8 @@ const DevreService = {
             throw new AppError("Devre bulunamadı", 404, "NOT_FOUND")
 
         // Ekip başı yardımcı olamaz
-        if (devre.devreEkipBasi?.toString() === userId)
+        const basiId = devre.devreEkipBasi?._id?.toString() || devre.devreEkipBasi?.toString()
+        if (basiId === userId)
             throw new AppError("Bu kullanıcı zaten devre ekip başı", 400, "CONFLICT")
 
         const guncellendi = await devreRepository.devreEkipBasiYardimciDegistir(devreId, userId)
@@ -168,12 +170,16 @@ const DevreService = {
 
         // Ekip zaten bu devrede mi?
         const zatenVar = devre.ekipler
-            ?.some(e => e.toString() === ekipId)
+            ?.some(e => {
+                const eId = e?._id?.toString() || e?.toString();
+                return eId === ekipId;
+            })
         if (zatenVar)
             throw new AppError("Bu ekip zaten bu devrede", 400, "ALREADY_EXISTS")
 
         // Ekip başka bir devrede mi?
-        if (ekip.devre && ekip.devre.toString() !== devreId)
+        const eDevreId = ekip.devre?._id?.toString() || ekip.devre?.toString();
+        if (eDevreId && eDevreId !== devreId)
             throw new AppError("Bu ekip zaten başka bir devreye bağlı", 400, "CONFLICT")
 
         const guncellendi = await devreRepository.ekipEkle(devreId, ekipId)
@@ -199,13 +205,18 @@ const DevreService = {
             throw new AppError("Devre bulunamadı", 404, "NOT_FOUND")
 
         const ekipte = devre.ekipler
-            ?.some(e => e.toString() === ekipId)
+            ?.some(e => {
+                const eId = e?._id?.toString() || e?.toString();
+                return eId === ekipId;
+            });
         if (!ekipte)
             throw new AppError("Bu ekip bu devrede değil", 400, "NOT_FOUND")
 
         // Ekip başı veya yardımcısı olan ekip çıkarılamaz
         const ekip = await ekipRepository.findById(ekipId)
-        if (ekip?.ekipBasi?.toString() === devre.devreEkipBasi?.toString())
+        const eBasiId = ekip?.ekipBasi?._id?.toString() || ekip?.ekipBasi?.toString()
+        const dBasiId = devre.devreEkipBasi?._id?.toString() || devre.devreEkipBasi?.toString()
+        if (eBasiId && dBasiId && eBasiId === dBasiId)
             throw new AppError("Devre ekip başının ekibi çıkarılamaz", 400, "CONFLICT")
 
         const guncellendi = await devreRepository.ekipCikar(devreId, ekipId)

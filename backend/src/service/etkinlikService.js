@@ -11,7 +11,7 @@ const EtkinlikService = {
             caption: dto.caption,
             type: dto.type,
             // etkinlik tipine özgü alanlar — durum ise spread boş gelir
-            ...(dto.type === "etkinlik" && {
+            ...(dto.type !== "Durum" && {
                 location: dto.location,
                 date: dto.date,
                 lastDate: dto.lastDate,
@@ -39,7 +39,7 @@ const EtkinlikService = {
 
     getAllEtkinlikler: async ({ page, limit }) => {
         const skip = (page - 1) * limit
-        const { etkinlikler, total } = await etkinlikRepository.findAll({ skip, limit })
+        const { etkinlikler, total } = await etkinlikRepository.findall({ skip, limit })
 
         return {
             etkinlikler,
@@ -58,7 +58,8 @@ const EtkinlikService = {
         if (!etkinlik)
             throw new AppError("Etkinlik bulunamadı", 404, "NOT_FOUND")
 
-        if (etkinlik.user._id.toString() !== user._id.toString())
+        const ownerId = etkinlik.user?._id?.toString() || etkinlik.user?.toString()
+        if (ownerId !== user._id.toString())
             throw new AppError("Bu işlem için yetkiniz yok", 403, "FORBIDDEN")
 
         await etkinlikRepository.deleteById(etkinlikId)
@@ -77,7 +78,7 @@ const EtkinlikService = {
         if (!etkinlik)
             throw new AppError("Etkinlik bulunamadı", 404, "NOT_FOUND")
 
-        if (etkinlik.type !== "etkinlik")
+        if (etkinlik.type !== "Kamp")
             throw new AppError("Duruma katılımcı eklenemez", 400, "INVALID_OPERATION")
 
         const zatenKatildi = etkinlik.katilimcilar
