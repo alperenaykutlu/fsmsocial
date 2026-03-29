@@ -1,71 +1,108 @@
-# FSMSocial - İzci ve Sosyal Paylaşım Uygulaması
-FSMSocial, izci grupları ve kullanıcıların bir araya gelerek etkinlikler düzenleyebileceği, profillerini yönetebileceği ve takım/ekip/devre süreçlerini takip edebileceği tam yığın (full-stack) bir mobil uygulamadır. 
-Özellikle sistemin arkaplan (backend) kurgusu, karmaşık izcilik hiyerarşisini (Ekipler, Devreler, Liderlikler) profesyonelce yönetebilmek adına üst düzey tasarım desenleriyle (Design Patterns) geliştirilmiştir.
+# FSM Social Backend API
+
+FSM Social (İzci Yönetim Sistemi / Scout Application) projesinin güçlü, test edilebilir ve ölçeklenebilir backend mimarisini içerir.
+Katmanlı mimari (Domain-Driven Design esintileri ile Service - Repository - Controller örüntüsü) etrafında şekillendirilerek inşa edilmiştir.
+
+## 🚀 Teknolojik Yaklaşım ve Kullanılan Teknolojiler
+
+- **Platform:** [Node.js](https://nodejs.org/) & [Express.js](https://expressjs.com/)
+- **Veritabanı:** [MongoDB](https://www.mongodb.com/) (ODM: [Mongoose](https://mongoosejs.com/))
+- **Güvenlik & Doğrulama:**
+  - `bcryptjs` (Şifre hashleme)
+  - `jsonwebtoken` (Access & Refresh token rotasyonu)
+  - `helmet`, `xss`, `express-mongo-sanitize`, `express-rate-limit` (Gelişmiş Web Güvenliği)
+  - `zod` & `joi` (İstek verisi doğrulama / validation)
+- **Gerçek Zamanlı İletişim (Real-time):** [Socket.io](https://socket.io/) (Redis-adapter mimarisi ile dağıtık çalışmaya hazır)
+- **Test Altyapısı (TDD):**
+  - [Vitest](https://vitest.dev/) (Modern & Hızlı Test Runner)
+  - `mongodb-memory-server` (İzole, hafızada çalışan test veritabanı)
+  - `supertest` (Uçtan uça E2E Controller/Route testleri)
+- **Loglama:** Winston modülü üzerinden audit log ve dosya/konsol hata loglama.
+
 ---
-## 🏗️ Mimari Tasarım (Backend - Katmanlı Mimari)
-Backend tarafında temiz kod (Clean Code) ve SOLID prensiplerine sadık kalarak, kodun ileride kolayca genişletilebilir (Scalable) olması adına **Katmanlı Mimari (N-Tier Architecture)** ve **Repository Pattern** kullanılmıştır. 
-### Backend Klasör Yapısı (`/backend/src`)
-Proje aşağıdaki ayrıştırılmış (decoupled) bileşenlerden oluşmaktadır:
-- **`models/`**: MongoDB koleksiyonlarına karşılık gelen Mongoose şemalarının bulunduğu veri modelleme katmanı (Kullanıcı, Ekip, Devre, Post/Etkinlik, Bildirimler).
-- **`repository/`**: Sadece veritabanı sorgularının yapıldığı, veriye erişim katmanı (Data Access Layer). Bu sayede iş kuralları veritabanı sorgularından ayrılmıştır.
-- **`service/`**: Uygulamanın tüm iş mantığının (Business Logic) yer aldığı katman. (Örn: Bir kullanıcının eklenebileceği ekibin doğrulanması, devre liderliği atamaları vs.)
-- **`controller/`**: Sadece Client (Mobil uygulama) tarafına verilecek HTTP yanıtlarının ve status kodlarının yönetildiği, servis katmanıyla haberleşen köprü katmanı.
-- **`routes/`**: API endpoint'lerinin (Örn: `/api/ekip`, `/api/devre`) tanımlanıp router'ların yönetildiği yer.
-- **`validations/`**: Gelen HTTP isteklerinin (body, params) Zod ve Joi ile doğrulandığı katman (Validation Layer).
-- **`middleware/`**: JWT doğrulama (Auth), rate-limit (Hız sınırlandırıcı), xss/mongo-sanitize (Güvenlik) gibi araya giren fonksiyonların tanımlandığı bölüm.
-- **`utils/`, `shared/` ve `lib/`**: Loglayıcılar (Winston), enum tanımları ve yardımcı araçların bulunduğu ortak klasörler.
-Bu mimari sayesinde proje, "Domain-Driven Design (DDD)" prensiplerine yakın, test edilebilir ve her modülü bağımsız çalışabilir bir yapıya kavuşturulmuştur.
----
-## 🚀 Öne Çıkan Özellikler
-1. **Gelişmiş Ekip ve Devre Yönetimi**: 
-   - İzcilik hiyerarşisindeki "Ekip"ler ve takımların bağlı bulunduğu "Devre"lerin birbiriyle ilişkisel olarak yönetilmesi.
-   - İlgili servis ve repository'ler üzerinden lider/üye atama dinamikleri.
-2. **Kullanıcı & Cihaz Yönetimi**: 
-   - JWT tabanlı güvenli giriş ve yetkilendirme sistemi.
-3. **Profil ve Medya (Cloudinary) Yönetimi**: 
-   - Sistem yükünü azaltmak ve bağımsız medya sunucusu kullanmak için Cloudinary entegrasyonu.
-4. **Etkinlik & Sosyal Paylaşım (Posts)**: 
-   - Etkinlik oluşturma (`etkinlikRepository`), durum paylaşma ve bunlara katılma işlemleri.
-5. **Bildirim Sistemi (Notifications)**:
-   - Sistem içi aktivitelerden anında haberdar olma.
----
-## 🛠️ Kullanılan Teknolojiler
-### Backend REST API (`/backend`)
-- **Çatı**: Node.js & Express.js
-- **Veritabanı**: MongoDB & Mongoose
-- **Mimari Kalıp**: N-Tier Architecture, Repository/Service Pattern
-- **Güvenlik**: `helmet`, `express-rate-limit`, `express-mongo-sanitize`, `xss`
-- **Şifreleme ve Auth Katmanı**: JWT (`jsonwebtoken`) ve Parola Kriptolama (`bcryptjs/bcrypt`)
-- **Validasyon**: `zod` ve `joi`
-- **Loglama ve Task Yönetimi**: `winston` (İstek/Hata logları) ve `cron` (Zamanlanmış görevler)
-- **Gerçek Zamanlı İletişim**: `socket.io` (Anlık bildirimler, eşzamanlı sohbet ve etkinlik canlı akışı)
-- **Önbellekleme (Caching)**: `redis` (Sık okunan verilerin önbelleklenerek veritabanı performansının artırılması)
-### Mobil İlk Yüz (Frontend - `/social`)
-- **Çatı**: React Native & Expo (v54)
-- **Navigasyon**: Expo Router & React Navigation
-- **Durum (State) Yönetimi**: Zustand
-- **Veri Tipi Güvenliği**: TypeScript
-- **Yerel Depolama**: AsyncStorage 
----
-## 💻 Kurulum ve Geliştirme Ortamı
-**Adım 1: Projenin Klonlanması**
-```bash
-git clone https://github.com/alperenaykutlu/fsmsocial.git
-cd fsmsocial
+
+## 📂 Dizin Yapısı ve Mimari Örüntü
+
+```plaintext
+/backend
+├── /src
+│   ├── /controllers     # HTTP Talepleri karşılanır (Request validator'dan geçer) (Yakında Eklenecek)
+│   ├── /middlewares     # Error handler, Logger, Rate-Limiter, Auth middlewares 
+│   ├── /models          # Mongoose Şemaları (User, Etkinlik, Devre, Ekip vb.)
+│   ├── /repository      # Veritabanı sorguları bu soyutlanmış katmanda işlenir
+│   │   ├── __tests__    # Repository seviyesi entegrasyon birim testleri (Populate vb. davranış testleri)
+│   ├── /routes          # Express.js endpoint tanımlamaları
+│   ├── /service         # Temel E-Ticaret / İş Mantığı kuralları (Business Logic / Validation)
+│   │   ├── __tests__    # Service mantık ve iş kurallarını test eden Test Driven Development yapısı
+│   ├── /shared          # Global Enums ve Sabit değerler
+│   ├── /test            # Her test senaryosunda Mongoose-Memory-Server'ı başlatan/temizleyen izole Db Test setup'ı
+│   └── /utils           # AppError vb. ortak araçlar
+├── index.js             # Sistemin Entry Point dosyası (Express App ve Socket.io ayağa kaldırılır)
+└── package.json         # Proje bağımlılıkları ve modüller (ESModules type: "module")
 ```
-**Adım 2: Backend'in Ayağa Kaldırılması**
+
+👉 **Design Pattern Avantajı**: `routes` $\rightarrow$ `service` $\rightarrow$ `repository`
+Tüm veri işlemleri repository katmanında, tüm iş kuralları servislerde yönetilir. Controller sadece gelen veriyi servise iletir.
+
+---
+
+## 📦 Kurulum ve Çalıştırma
+
+### Ortam Kurulumu
+1. Repoyu klonladıktan sonra projeye dahil olun.
+2. Aşağıdaki komutla tüm npm paketlerini yükleyin:
 ```bash
-cd backend
 npm install
 ```
-`.env` dosyanızı `backend` dizininde oluşturduktan sonra (PORT, MONGODB_URI, JWT_SECRET, CLOUDINARY keyleri ile) sunucuyu çalıştırın:
-```bash
-npm run dev
+
+### ENV (Ortam Değişkenleri) Ayarları
+Proje kök dizininde `.env` isimli dosyanızı oluşturup minimum şu anahtarları eklemelisiniz:
+```env
+PORT=3000
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster...
+JWT_ACCESS_SECRET=your_access_secret_key
+JWT_REFRESH_SECRET=your_refresh_secret_key
+JWT_ACCESS_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=7d
 ```
-**Adım 3: Mobil Uygulamanın Başlatılması**
+
+### Sunucu Modları
+*   **Geliştirici Modunda Başlat (Nodemon eşliğinde, kod değiştikçe Resetler):**
+    ```bash
+    npm run dev
+    ```
+*   **Production Standart Başlat:**
+    ```bash
+    npm start
+    ```
+
+---
+
+## 🧪 Gelişmiş Test Yaklaşımı (Vitest)
+
+Proje TDD (Test Driven Development) yaklaşımı ve %100 kapsama giden iş mantığı üzerine kurulmuştur. Gerçek veritabanını bozmadan bellekte (`mongodb-memory-server`) izole test DB'leri kurulur, testler atılır ve bellekten silinir.
+
+Testleri başlatmak için:
 ```bash
-cd ../social
-npm install
-npx expo start
+npm test
 ```
-QR kodunu okutarak uygulamanızı test edebilirsiniz.
+*(Bu komut `vitest run` çalıştırarak backend'deki tüm testleri bulur, Mongoose şema testlerini gerçekleştirir ve test veritabanını temiz bir şekilde serbest bırakır).*
+
+**Test Edilmiş Bileşenler ve Güvence Altına Alınan Mantıklar:**
+- Oauth benzeri **Rotation bazlı Access & Refresh Token** güvenliği ve expired yönetimi.
+- Kullanıcıların **TC Kimlik validasyonları** ve Exception/Error Handling senaryoları.
+- Etkinlik katılım (Rsvp), kota kontrol (Kontenjan limiti null/sınırlı durumları) ve Model Population yapıları.
+- Scout hiyerarşisi atama kuralları (Örn: *Yardımcı olan kişi aynı yerde baş olamaz*, *Aynı ekip 2 kere atanamaz* vb.)
+
+---
+
+## 🛡 Hata Yönetimi
+Global bir try-catch/error mekanizması oluşturulmuştur. Sistemin içinde herhangi bir yerde kontrollü hata atarken `AppError` sınıfını kullanmanız gerekir:
+```javascript
+throw new AppError("Bu TC Kimlik zaten alınmış!", 400, "DUPLICATE_ENTRY");
+```
+Sistem bu hatayı otomatik yakalayıp JSON objesi halinde istemciye standart olarak iletir.
+
+---
+
+> Bu proje izcilerin kampları, devriye ekipleri, rolleri ve sosyalleşebilmeleri için üretilmiş özel ve kapalı devre bir backend omurgasına sahiptir. Geliştirilmeye devam edilmektedir.
