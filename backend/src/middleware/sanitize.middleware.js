@@ -22,9 +22,17 @@ export const xssSanitize = (req, res, next) => {
         return val
     }
 
-    if (req.body) req.body = sanitizeValue(req.body)
-    if (req.query) req.query = sanitizeValue(req.query)
-    if (req.params) req.params = sanitizeValue(req.params)
+    if (req.body) req.body = sanitizeValue(req.body);
+    if (req.query) {
+        for (let key in req.query) {
+            req.query[key] = sanitizeValue(req.query[key]);
+        }
+    }
+    if (req.params) {
+        for (let key in req.params) {
+            req.params[key] = sanitizeValue(req.params[key]);
+        }
+    }
 
     next()
 }
