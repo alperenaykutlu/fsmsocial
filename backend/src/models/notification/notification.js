@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { etkinlikTur } from "../../shared/enums/etkinliktur.enum";
+import { etkinlikTur } from "../../shared/enums/etkinliktur.enum.js";
 
 const  notificationSchema=new mongoose.Schema(
 

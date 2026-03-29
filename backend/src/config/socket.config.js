@@ -1,9 +1,9 @@
 import {Server} from 'socket.io'
 import createAdapter from '@socket.io/redis-adapter'
-import { sub,pub } from './redis.config.js'
+import { sub, pub, isRedisEnabled } from './redis.config.js'
 import {rsvpService} from '../service/rsvpService.js'
-import {authMiddleware} from '../middleware/auth.middleware.js'
-import { http } from 'winston'
+import {socketAuth} from '../middleware/auth.middleware.js'
+
 import AppError from '../utils/AppError.js'
 
 let io
@@ -18,8 +18,10 @@ const initSocket=(httpServer)=>{
         pingInterval:25000
     })
 
-    io.adapter(createAdapter(pub,sub))
-    io.use(authMiddleware)
+    if (isRedisEnabled && pub && sub) {
+        io.adapter(createAdapter(pub,sub))
+    }
+    io.use(socketAuth)
 
     io.on('connection',(socket)=>{
         const user=socket.data.user
@@ -31,7 +33,7 @@ socket.on('rsvp',async({postID,status})=>{
     try {
       await rsvpService.update(postID, socket.data.user._id, status);
 
-    } catch (error) {
+    } catch (err) {
               socket.emit('rsvp_error', { message: err.message });
 
     }
@@ -45,7 +47,7 @@ return io
 }
 
 const getIO=()=>{
-    if(!io) new AppError('Socket.IO henüz initialize edilmedi',404,'INITALIZED')
+    if(!io) throw new AppError('Socket.IO henüz initialize edilmedi',404,'INITALIZED')
         return io
 }
 export { initSocket, getIO };

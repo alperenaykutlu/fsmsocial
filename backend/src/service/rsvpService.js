@@ -1,5 +1,5 @@
-import {etkinlikRepository} from '../repository/etkinlikRepository.js'
-import AppError from '../utils/AppError'
+import etkinlikRepository from '../repository/etkinlikRepository.js'
+import AppError from '../utils/AppError.js'
 
 class rsvpService{
     static async update(postID,userID,status){
@@ -16,4 +16,4 @@ class rsvpService{
  }
 }
 
-module.exports={rsvpService}
+export { rsvpService }

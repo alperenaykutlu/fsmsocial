@@ -1,7 +1,5 @@
 import AuthService from "../service/authService.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import { refreshToken } from "../utils/tokenHelper.js";
-
 const AuthController={
     register:asyncHandler(async (req,res)=>{
         const result=await AuthService.register(req.body,req.ip)
@@ -16,11 +14,10 @@ const AuthController={
         res.status(200).json(result)
     }),
     refresh: asyncHandler(async(req,res)=>{
-        const {refreshToken}=req.body
-        const tokens=await AuthService.refreshTok(refreshToken)
-        res.staus(200).json(tokens) 
-    })
-    ,
+        const {generateRefreshToken}=req.body
+        const tokens=await AuthService.refreshTok(generateRefreshToken)
+        res.status(200).json(tokens) 
+    }),
     logout:asyncHandler(async(req,res)=>{
         await AuthService.logout(req.user._id)
         res.status(200).json({message:"Çıkış Yapıldı"})

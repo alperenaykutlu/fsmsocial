@@ -79,7 +79,8 @@ const EtkinlikService = {
             throw new AppError("Etkinlik bulunamadı", 404, "NOT_FOUND")
 
         if (etkinlik.type !== "Kamp")
-            throw new AppError("Duruma katılımcı eklenemez", 400, "INVALID_OPERATION")
+            
+            throw new AppError("Duruma katılımcı eklenemez", 404, "INVALID_OPERATION")
 
         const zatenKatildi = etkinlik.katilimcilar
             .some(k => k.toString() === user._id.toString())

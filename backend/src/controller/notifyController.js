@@ -1,4 +1,4 @@
-import {NotificationRepository} from '../repository/notificationRepository.js'
+import NotificationRepository from '../repository/notificationRepository.js'
 import AppError from '../utils/AppError.js'
 
 class NotificationController{
