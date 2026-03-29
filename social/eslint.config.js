@@ -1,10 +1,10 @@
-// https://docs.expo.dev/guides/using-eslint/
-const { defineConfig } = require('eslint/config');
-const expoConfig = require('eslint-config-expo/flat');
+import { defineConfig } from 'vitest/config';
 
-module.exports = defineConfig([
-  expoConfig,
-  {
-    ignores: ['dist/*'],
+export default defineConfig({
+  test: {
+    env: {
+      JWT_SECRET: 'test-secret-key',
+      JWT_REFRESH_SECRET: 'test-refresh-secret',
+    },
   },
-]);
+});
