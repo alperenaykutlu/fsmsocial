@@ -1,68 +1,74 @@
 # FSMSocial - İzci ve Sosyal Paylaşım Uygulaması
 FSMSocial, izci grupları ve kullanıcıların bir araya gelerek etkinlikler düzenleyebileceği, profillerini yönetebileceği ve takım/ekip/devre süreçlerini takip edebileceği tam yığın (full-stack) bir mobil uygulamadır. 
-Projenin mimarisi, izcilik teşkilat yapısındaki "Ekipler (Troops)", "Devreler" ve "Liderler" arasındaki ilişkiyi DDD (Domain-Driven Design) mantığına uygun bir şekilde yönetebilmek üzere tasarlanmıştır.
+Özellikle sistemin arkaplan (backend) kurgusu, karmaşık izcilik hiyerarşisini (Ekipler, Devreler, Liderlikler) profesyonelce yönetebilmek adına üst düzey tasarım desenleriyle (Design Patterns) geliştirilmiştir.
+---
+## 🏗️ Mimari Tasarım (Backend - Katmanlı Mimari)
+Backend tarafında temiz kod (Clean Code) ve SOLID prensiplerine sadık kalarak, kodun ileride kolayca genişletilebilir (Scalable) olması adına **Katmanlı Mimari (N-Tier Architecture)** ve **Repository Pattern** kullanılmıştır. 
+### Backend Klasör Yapısı (`/backend/src`)
+Proje aşağıdaki ayrıştırılmış (decoupled) bileşenlerden oluşmaktadır:
+- **`models/`**: MongoDB koleksiyonlarına karşılık gelen Mongoose şemalarının bulunduğu veri modelleme katmanı (Kullanıcı, Ekip, Devre, Post/Etkinlik, Bildirimler).
+- **`repository/`**: Sadece veritabanı sorgularının yapıldığı, veriye erişim katmanı (Data Access Layer). Bu sayede iş kuralları veritabanı sorgularından ayrılmıştır.
+- **`service/`**: Uygulamanın tüm iş mantığının (Business Logic) yer aldığı katman. (Örn: Bir kullanıcının eklenebileceği ekibin doğrulanması, devre liderliği atamaları vs.)
+- **`controller/`**: Sadece Client (Mobil uygulama) tarafına verilecek HTTP yanıtlarının ve status kodlarının yönetildiği, servis katmanıyla haberleşen köprü katmanı.
+- **`routes/`**: API endpoint'lerinin (Örn: `/api/ekip`, `/api/devre`) tanımlanıp router'ların yönetildiği yer.
+- **`validations/`**: Gelen HTTP isteklerinin (body, params) Zod ve Joi ile doğrulandığı katman (Validation Layer).
+- **`middleware/`**: JWT doğrulama (Auth), rate-limit (Hız sınırlandırıcı), xss/mongo-sanitize (Güvenlik) gibi araya giren fonksiyonların tanımlandığı bölüm.
+- **`utils/`, `shared/` ve `lib/`**: Loglayıcılar (Winston), enum tanımları ve yardımcı araçların bulunduğu ortak klasörler.
+Bu mimari sayesinde proje, "Domain-Driven Design (DDD)" prensiplerine yakın, test edilebilir ve her modülü bağımsız çalışabilir bir yapıya kavuşturulmuştur.
+---
 ## 🚀 Öne Çıkan Özellikler
-- **Kullanıcı & Cihaz Yönetimi**: JWT tabanlı güvenli giriş ve yetkilendirme sistemi.
-- **Profil ve Medya Yönetimi**: **Cloudinary** entegrasyonu ile kesintisiz ve güvenli profil/fotoğraf yükleme altyapısı.
-- **Etkinlik & Sosyal Paylaşım**: Kullanıcıların etkinlik detaylarını görebilmesi, etkinliklere kayıt olup onay/red durumlarını takip edebilmesi ve durum paylaşımları yapabilmesi.
-- **Ekip ve Devre Hiyerarşisi**: Ekip repo servisi ve devre yönetimi standartları ile kullanıcıların takımlar arası ilişkilerinin yönetilmesi.
+1. **Gelişmiş Ekip ve Devre Yönetimi**: 
+   - İzcilik hiyerarşisindeki "Ekip"ler ve takımların bağlı bulunduğu "Devre"lerin birbiriyle ilişkisel olarak yönetilmesi.
+   - İlgili servis ve repository'ler üzerinden lider/üye atama dinamikleri.
+2. **Kullanıcı & Cihaz Yönetimi**: 
+   - JWT tabanlı güvenli giriş ve yetkilendirme sistemi.
+3. **Profil ve Medya (Cloudinary) Yönetimi**: 
+   - Sistem yükünü azaltmak ve bağımsız medya sunucusu kullanmak için Cloudinary entegrasyonu.
+4. **Etkinlik & Sosyal Paylaşım (Posts)**: 
+   - Etkinlik oluşturma (`etkinlikRepository`), durum paylaşma ve bunlara katılma işlemleri.
+5. **Bildirim Sistemi (Notifications)**:
+   - Sistem içi aktivitelerden anında haberdar olma.
 ---
 ## 🛠️ Kullanılan Teknolojiler
-Projemiz, modern web ve mobil standartlarında güncel kütüphanelerle geliştirilmiştir.
-### Frontend (Mobil Uygulama - `/social`)
-- **React Native & Expo (v54)**: Uygulamanın çapraz platform (iOS & Android) omurgası.
-- **Expo Router & React Navigation**: Uygulama içi akıcı yönlendirmeler ve sekmeler (Bottom Tabs) için.
-- **Zustand**: Sürdürülebilir ve hafif global state (durum) yönetimi.
-- **TypeScript**: Hataları henüz yazım aşamasındayken yakalamak ve tip güvenliği sağlamak için.
-- **AsyncStorage**: Cihaz üzerinde token vb. verilerin güvenli ve kalıcı olarak tutulması için.
-- **Expo Image & Picker**: Uygulama içi yüksek performanslı görsel optimizasyonu ve resim seçimi.
-### Backend (REST API - `/backend`)
-- **Node.js & Express.js**: Sunucu tabanlı API arayüzü.
-- **MongoDB & Mongoose**: Esnek (NoSQL) veritabanı yapısı ve ORM çözümü.
-- **Güvenlik Katmanı**: `helmet`, `express-rate-limit`, `express-mongo-sanitize` ve `xss` kullanılarak uygulamanın temel siber saldırılara (DDoS, XSS, NoSQL Injection) karşı korunması.
-- **Kimlik Doğrulama**: `jsonwebtoken` (JWT) ve `bcryptjs` aracılığıyla şifre hashlama ve kullanıcı yetkilendirme.
-- **Validasyon**: Gelen HTTP isteklerindeki body/params doğrulamaları için `zod` ve `joi`.
-- **Loglama ve Görev Yönetimi**: `winston` ile API isteklerinin hata takip amaçlı kayıt altına alınması, `cron` ile arka plan ve zamanlanmış görev yönetimi.
+### Backend REST API (`/backend`)
+- **Çatı**: Node.js & Express.js
+- **Veritabanı**: MongoDB & Mongoose
+- **Mimari Kalıp**: N-Tier Architecture, Repository/Service Pattern
+- **Güvenlik**: `helmet`, `express-rate-limit`, `express-mongo-sanitize`, `xss`
+- **Şifreleme ve Auth Katmanı**: JWT (`jsonwebtoken`) ve Parola Kriptolama (`bcryptjs/bcrypt`)
+- **Validasyon**: `zod` ve `joi`
+- **Loglama ve Task Yönetimi**: `winston` (İstek/Hata logları) ve `cron` (Zamanlanmış görevler)
+### Mobil İlk Yüz (Frontend - `/social`)
+- **Çatı**: React Native & Expo (v54)
+- **Navigasyon**: Expo Router & React Navigation
+- **Durum (State) Yönetimi**: Zustand
+- **Veri Tipi Güvenliği**: TypeScript
+- **Yerel Depolama**: AsyncStorage 
 ---
 ## 🔮 Gelecekte Eklenecek Teknolojiler (Roadmap)
-Projenin ölçeği büyüdüğünde ve etkileşim arttığında sisteme entegre edilmesi planlanan hedefler:
-- **Socket.io**: Kullanıcılara yeni etkinlik onayları, ekip atamaları veya sistem duyuruları geldiğinde anlık (real-time) bildirimler verebilmek ve eşzamanlı bir haberleşme/mesajlaşma ağı kurmak.
-- **Redis (Caching)**: Veritabanı sorgularının yükünü hafifletmek adına çok sık erişilen verilerin (Örn: aktif ekiplerin listesi, genel duyurular) milisaniyelik hızlarda RAM üzerinden sunulmasını sağlamak ve performansı uç noktaya taşımak.
+Sistemin gerçek zamanlı yeteneklerini ve genel erişim hızını artırmak amacıyla planlanmış geliştirmeler:
+- **Socket.io**: Bildirimler (Notification Modelinin tetikleri), sohbet özellikleri ve etkinlik katılımlarının canlı yayınlanması için eklenecektir.
+- **Redis (Kayıt Önbellekleme)**: Database trafiğini azaltmak için sık okunan (Read-heavy) sorguların (örneğin Aktif Ekip ve Devre listeleri) önbellekte tutulması için sisteme entegre edilecektir.
 ---
-## 💻 Kurulum ve Çalıştırma
-### 1. Deponun Sisteme Kurulması
-Projeyi Github üzerinden klonlayın:
+## 💻 Kurulum ve Geliştirme Ortamı
+**Adım 1: Projenin Klonlanması**
 ```bash
 git clone https://github.com/alperenaykutlu/fsmsocial.git
 cd fsmsocial
 ```
-### 2. Backend Geliştirme Ortamı
-API sunucusunu başlatmak için ilgili klasöre gidip paketleri indirin:
+**Adım 2: Backend'in Ayağa Kaldırılması**
 ```bash
 cd backend
 npm install
 ```
-`backend` dizininde bir `.env` dosyası oluşturarak aşağıdaki ortam parametrelerini projenize göre girin:
-```env
-PORT=5000
-MONGODB_URI=sizin_mongodb_baglanti_dizginiz
-JWT_SECRET=gizli_anahtariniz
-CLOUDINARY_CLOUD_NAME=cloudinary_adiniz
-CLOUDINARY_API_KEY=api_anaharitniz
-CLOUDINARY_API_SECRET=gizli_api_anahtariniz
-```
-Sunucuyu ayağa kaldırın:
+`.env` dosyanızı `backend` dizininde oluşturduktan sonra (PORT, MONGODB_URI, JWT_SECRET, CLOUDINARY keyleri ile) sunucuyu çalıştırın:
 ```bash
 npm run dev
 ```
-### 3. Frontend (Mobil) Geliştirme Ortamı
-Yeni bir terminal/CMD penceresinde `social` dizinine ilerleyin:
+**Adım 3: Mobil Uygulamanın Başlatılması**
 ```bash
-cd fsmsocial/social
+cd ../social
 npm install
-```
-Expo sunucusunu başlatarak kodu derleyin:
-```bash
 npx expo start
 ```
-> Terminalde beliren QR kodu Expo Go (iOS/Android) uygulaması ile cihazınızda okutabilir veya `a` / `i` tuşları ile sanal cihaz emülatörü üzerinden projenizi çalıştırabilirsiniz.
+QR kodunu okutarak uygulamanızı test edebilirsiniz.
