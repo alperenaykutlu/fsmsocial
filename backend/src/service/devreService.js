@@ -1,6 +1,6 @@
 // services/devreService.js
-import devreRepository from '../repositories/devreRepository.js'
-import ekipRepository from '../repositories/ekipRepository.js'
+import devreRepository from '../repository/devreRepository.js'
+import ekipRepository from '../repository/ekipRepository.js'
 import AppError from '../utils/AppError.js'
 import { auditLog } from '../utils/auditlog.js'
 

@@ -1,8 +1,8 @@
 import express from 'express'
-import EtkinlikController from '../controllers/etkinlikController.js'
+import EtkinlikController from '../controller/etkinlikController.js'
 import protectRoute from '../middleware/auth.middleware.js'
-import validate from '../middleware/validate.js'
-import { apiLimiter } from '../middleware/rateLimiter.js'
+import validate from '../middleware/validate.middleware.js'
+import { apiLimiter } from '../middleware/rateLimiter.middleware.js'
 import { createEtkinlikSchema } from '../validations/etkinlik.validation.js'
 
 const router = express.Router()

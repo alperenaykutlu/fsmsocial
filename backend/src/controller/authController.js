@@ -1,6 +1,6 @@
 import AuthService from "../service/authService.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import { refreshToken } from "../utils/tokenHelper";
+import { refreshToken } from "../utils/tokenHelper.js";
 
 const AuthController={
     register:asyncHandler(async (req,res)=>{

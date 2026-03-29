@@ -1,6 +1,6 @@
 import Etkinlik from "../models/posts/etkinlik.js";
 
-class EtkinilkRepository {
+class EtkinlikRepository {
     async create(data) {
         const etkinlik = new Etkinlik(data)
         return await etkinlik.save()
@@ -40,6 +40,15 @@ class EtkinilkRepository {
         return await Etkinlik.countDocuments({ type })
 
     }
+static async updateRsvp(postId, userId, status) {
+  const addField    = status === 'going' ? 'attendees' : 'notAttendees';
+  const removeField = status === 'going' ? 'notAttendees' : 'attendees';
+
+  return Post.findByIdAndUpdate(postId, {
+    $addToSet: { [addField]: userId },
+    $pull:     { [removeField]: userId },
+  }, { new: true });
+}
 
 }
 export default new EtkinlikRepository()

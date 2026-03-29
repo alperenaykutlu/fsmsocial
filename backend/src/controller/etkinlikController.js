@@ -1,4 +1,4 @@
-import EtkinlikService from '../services/etkinlikService.js'
+import EtkinlikService from '../service/etkinlikService.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import { paginationSchema } from '../validations/etkinlik.validation.js'
 

@@ -1,5 +1,5 @@
 // controllers/devreController.js
-import EkipService from '../services/ekipService.js'
+import EkipService from '../service/ekipService.js'
 import asyncHandler from '../utils/asyncHandler.js'
 
 const EkipController = {

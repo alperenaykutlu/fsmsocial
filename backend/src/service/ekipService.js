@@ -1,5 +1,5 @@
 // services/ekipService.js
-import ekipRepository from '../repositories/ekipRepository.js'
+import ekipRepository from '../repository/ekipRepository.js'
 import AppError from '../utils/AppError.js'
 import { auditLog } from '../utils/auditlog.js'
 

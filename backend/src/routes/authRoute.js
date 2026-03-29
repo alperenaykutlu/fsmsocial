@@ -1,7 +1,7 @@
 import express from 'express'
 import AuthController from '../controller/authController.js'
 import validate from '../middleware/validate.middleware.js'
-import { authLimiter } from '../middleware/rateLimtier.middleware.js'
+import { authLimiter } from '../middleware/rateLimiter.middleware.js'
 import protectRoute from '../middleware/auth.middleware.js'
 import { registerSchema,loginSchema,profilTamamlaSchema } from '../validations/auth.validation.js'
 

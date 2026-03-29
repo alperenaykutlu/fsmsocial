@@ -1,5 +1,5 @@
 // controllers/devreController.js
-import DevreService from '../services/devreService.js'
+import DevreService from '../service/devreService.js'
 import asyncHandler from '../utils/asyncHandler.js'
 
 const DevreController = {

@@ -20,4 +20,4 @@ export const kanGrubu = Object.freeze({
 
 })
 
-export const KanGrubuValues = Object.values(KanGrubu)
+export const KanGrubuValues = Object.values(kanGrubu)

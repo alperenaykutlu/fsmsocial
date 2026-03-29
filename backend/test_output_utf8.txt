@@ -1,0 +1,93 @@
+﻿
+[1m[46m RUN [49m[22m [36mv4.1.2 [39m[90mC:/Users/alper/fsmeio/fsmsocial/backend[39m
+
+[90mstdout[2m | src/service/__tests__/authService.test.js[2m > [22m[2mAuthService Tests[2m > [22m[2mRegister should successfully return tokens without crashing
+[22m[39m2026-03-29 12:35:19 [[32minfo[39m]: AUDIT
+
+ [31m├ù[39m src/repository/__tests__/etkinlikRepository.test.js[2m > [22mEtkinlikRepository Tests[2m > [22mupdateRsvp should successfully mark user as attending and save to DB[32m 148[2mms[22m[39m
+[31m   ÔåÆ Etkinlik validation failed: type: `etkinlik` is not a valid enum value for path `type`.[39m
+ [31m├ù[39m src/service/__tests__/authService.test.js[2m > [22mAuthService Tests[2m > [22mRegister should successfully return tokens without crashing[32m 177[2mms[22m[39m
+[31m   ÔåÆ accessToken is not defined[39m
+ [31m├ù[39m src/service/__tests__/authService.test.js[2m > [22mAuthService Tests[2m > [22mLogin should successfully find a user by their username and return tokens[32m 127[2mms[22m[39m
+[31m   ÔåÆ username is not defined[39m
+node.exe : 
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m[1m[41m Failed Suites 1 [49m[22m[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m
+
+[41m[1m FAIL [22m[49m src/service/__tests__/devreService.test.js[2m [ src/service/__tests__/devreService.test.js ][22m
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'OKUL')[39m
+[36m [2mÔØ»[22m src/models/devre/devre.js:[2m15:28[22m[39m
+    [90m 13|[39m         type[33m:[39m [33mString[39m[33m,[39m
+    [90m 14|[39m         [35menum[39m[33m:[39m [33mDevreTypeValues[39m[33m,[39m
+    [90m 15|[39m         [35mdefault[39m[33m:[39m [33mDevreType[39m[33m.[39m[33mOKUL[39m
+    [90m   |[39m                            [31m^[39m
+    [90m 16|[39m     }[33m,[39m
+    [90m 17|[39m     izciSayisi[33m:[39m {
+[90m [2mÔØ»[22m src/repository/devreRepository.js:[2m2:1[22m[39m
+[90m [2mÔØ»[22m src/service/devreService.js:[2m2:1[22m[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/4]ÔÄ»[22m[39m
+
+
+[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m[1m[41m Failed Tests 3 [49m[22m[31mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[39m
+
+[41m[1m FAIL [22m[49m src/service/__tests__/authService.test.js[2m > [22mAuthService Tests[2m > [22mRegister should successfully return tokens without crashing
+[31m[1mReferenceError[22m: accessToken is not defined[39m
+[36m [2mÔØ»[22m Object.register src/service/authService.js:[2m107:13[22m[39m
+    [90m105|[39m         })
+    [90m106|[39m         [35mreturn[39m {
+    [90m107|[39m             accessToken[33m,[39m
+    [90m   |[39m             [31m^[39m
+    [90m108|[39m             refreshToken[33m,[39m
+    [90m109|[39m             user: { id: user._id, username: user.username, profileImg:ÔÇĞ
+[90m [2mÔØ»[22m src/service/__tests__/authService.test.js:[2m29:20[22m[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/4]ÔÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/service/__tests__/authService.test.js[2m > [22mAuthService Tests[2m > [22mLogin should successfully find a user by their username and return tokens
+[31m[1mReferenceError[22m: username is not defined[39m
+[36m [2mÔØ»[22m Object.login src/service/authService.js:[2m114:47[22m[39m
+    [90m112|[39m     login[33m:[39m
+    [90m113|[39m         [35masync[39m ({ email[33m,[39m password }[33m,[39m ip) [33m=>[39m {
+    [90m114|[39m             [35mconst[39m user [33m=[39m [35mawait[39m [33mUser[39m[33m.[39m[34mfindOne[39m({ username })
+    [90m   |[39m                                               [31m^[39m
+    [90m115|[39m             if (!user) throw new AppError("Eposta veya ┼şifre hatal─▒", ÔÇĞ
+    [90m116|[39m
+[90m [2mÔØ»[22m src/service/__tests__/authService.test.js:[2m57:38[22m[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/4]ÔÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/repository/__tests__/etkinlikRepository.test.js[2m > [22mEtkinlikRepository Tests[2m > [22mupdateRsvp should successfully mark user as attending and save to DB
+[31m[1mValidationError[22m: Etkinlik validation failed: type: `etkinlik` is not a valid enum value for path `type`.[39m
+[90m [2mÔØ»[22m model.validate node_modules/mongoose/lib/document.js:[2m2864:36[22m[39m
+[90m [2mÔØ»[22m model.$__save node_modules/mongoose/lib/model.js:[2m390:7[22m[39m
+[90m [2mÔØ»[22m model.save node_modules/mongoose/lib/model.js:[2m664:5[22m[39m
+[36m [2mÔØ»[22m src/repository/__tests__/etkinlikRepository.test.js:[2m38:5[22m[39m
+    [90m 36|[39m       user[33m:[39m user[33m.[39m_id
+    [90m 37|[39m     })[33m;[39m
+    [90m 38|[39m     [35mawait[39m etkinlik[33m.[39m[34msave[39m()[33m;[39m
+    [90m   |[39m     [31m^[39m
+    [90m 39|[39m
+    [90m 40|[39m     [90m// 3. Attempt to update RSVP[39m
+
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[22m[39m
+[31m[1mSerialized Error:[22m[39m [90m{ errors: { type: { name: 'ValidatorError', message: '`etkinlik` is not a valid enum value for path `type`.', properties: { validator: 'Function<anonymous>', message: '`etkin
+lik` is not a valid enum value for path `type`.', type: 'enum', enumValues: [ 'Durum', 'Kamp', 'Y├╝r├╝y├╝┼ş', '┼Şehir Gezisi', 'Yar─▒┼şma', 'Sosyal Etkinlik' ], path: 'type', fullPath: undefined, value: 'etkinlik', l
+ength: 8 }, kind: 'enum', path: 'type', value: 'etkinlik', reason: undefined, stack: 'ValidatorError: `etkinlik` is not a valid enum value for path `type`.\n    at SchemaString.doValidate (C:\Users\alper\fsmeio\fsmso
+cial\backend\node_modules\mongoose\lib\schemaType.js:1432:13)\n    at model.validate (C:\Users\alper\fsmeio\fsmsocial\backend\node_modules\mongoose\lib\document.js:2842:20)\n    at processTicksAndRejections (node:int
+ernal/process/task_queues:104:5)\n    at model.$__save (C:\Users\alper\fsmeio\fsmsocial\backend\node_modules\mongoose\lib\model.js:390:7)\n    at model.save (C:\Users\alper\fsmeio\fsmsocial\backend\node_modules\mongo
+ose\lib\model.js:664:5)\n    at C:/Users/alper/fsmeio/fsmsocial/backend/src/repository/__tests__/etkinlikRepository.test.js:38:5\n    at file:///C:/Users/alper/fsmeio/fsmsocial/backend/node_modules/@vitest/runner/dis
+t/chunk-artifact.js:1893:20' } }, _message: 'Etkinlik validation failed' }[39m
+[31m[2mÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[4/4]ÔÄ»[22m[39m
+
+
+[2m Test Files [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[90m (3)[39m
+[2m   Start at [22m 12:35:16
+[2m   Duration [22m 3.15s[2m (transform 342ms, setup 0ms, import 1.22s, tests 4.51s, environment 0ms)[22m
+

@@ -17,9 +17,18 @@ const logger=winston.createLogger({
         errors({stack:true}),
         logFormat
     ),
-    transports:{
+    transports:[
         new winston.transports.Console({
             format:combine(colorize(),logFormat)
+        }),
+        new winston.transports.File({
+            filename:path.join("logs","error.log"),
+            level:"error"
+        }),
+        new winston.transports.File({
+            filename:path.join("logs","combined.log")
         })
-    }
+    ]
 })
+
+export default logger

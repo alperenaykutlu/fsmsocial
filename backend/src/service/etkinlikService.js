@@ -1,5 +1,5 @@
 // services/etkinlikService.js
-import etkinlikRepository from '../repositories/etkinlikRepository.js'
+import etkinlikRepository from '../repository/etkinlikRepository.js'
 import AppError from '../utils/AppError.js'
 import { auditLog } from '../utils/auditlog.js'
 const EtkinlikService = {

@@ -1,11 +1,11 @@
 // routes/devre.routes.js
 import express from 'express'
-import DevreController from '../controllers/devreController.js'
-import protectRoute from '../middleware/protectRoute.js'
-import requireProfilTamamlandi from '../middleware/requireProfilTamamlandi.js'
-import authorize from '../middleware/authorize.js'
-import validate from '../middleware/validate.js'
-import { apiLimiter } from '../middleware/rateLimiter.js'
+import DevreController from '../controller/devreController.js'
+import protectRoute from '../middleware/auth.middleware.js'
+import requireProfilTamamlandi from '../middleware/profilTamamla.middleware.js'
+import authorize from '../middleware/authorize.middleware.js'
+import validate from '../middleware/validate.middleware.js'
+import { apiLimiter } from '../middleware/rateLimiter.middleware.js'
 import { createDevreSchema, devreAdSchema, devreUserSchema, devreEkipSchema } from '../validations/devre.validation.js'
 import { KullaniciTipi } from '../shared/enums/kullaniciTip.enum.js'
 
