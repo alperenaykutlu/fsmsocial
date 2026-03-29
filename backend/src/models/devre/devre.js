@@ -1,6 +1,6 @@
 // models/devre/devre.js
 import mongoose from "mongoose"
-import { DevreTypeValues, DevreType } from "../../shared/enums/devreType.enum.js"
+import { DevreTypeValues, DevreType } from "../../shared/enums/devretype.enum.js"
 
 const devreSchema = new mongoose.Schema({
     devreName: {

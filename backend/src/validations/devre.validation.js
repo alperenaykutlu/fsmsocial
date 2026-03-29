@@ -1,6 +1,6 @@
 // validations/devre.validation.js
 import { z } from "zod"
-import { DevreTypeValues } from "../shared/enums/devreType.enum.js"
+import { DevreTypeValues } from "../shared/enums/devretype.enum.js"
 
 const objectIdSchema = z.string().regex(/^[a-f\d]{24}$/i, "Geçerli bir ID girin")
 
