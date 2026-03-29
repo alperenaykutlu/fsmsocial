@@ -19,6 +19,9 @@ Proje iki ana bileşenden oluşmaktadır:
 - **MongoDB & Mongoose**: NoSQL veritabanı yönetimi ve ODM.
 - **Cloudinary**: Medya ve görsel yönetimi.
 - **Bcrypt.js & JSONWebToken (JWT)**: Parola şifreleme ve yetkilendirme işlemleri.
+### 🔮 Gelecekte Eklenecek Teknolojiler (Roadmap)
+- **Socket.io**: Kullanıcılara anlık bildirimler, eşzamanlı mesajlaşma ve duyuru iletimi sağlamak için eklenecektir.
+- **Redis**: Sık erişilen verilerin önbelleklenmesi (caching) ve uygulamanın genel performansının artırılması amacıyla entegre edilecektir.
 ---
 ## 💻 Kurulum ve Çalıştırma
 ### 1. Depoyu Klonlayın
