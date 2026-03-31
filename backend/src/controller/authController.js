@@ -21,7 +21,12 @@ const AuthController={
     logout:asyncHandler(async(req,res)=>{
         await AuthService.logout(req.user._id)
         res.status(200).json({message:"Çıkış Yapıldı"})
+    }),
+    forgotPassword:asyncHandler(async(req,res)=>{
+        const result=await AuthService.forgot(req.body,req.ip)
+        res.status(200).json(result)
     })
+
 }
 
 export default AuthController
