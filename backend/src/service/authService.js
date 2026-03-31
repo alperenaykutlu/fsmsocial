@@ -80,6 +80,14 @@ const AuthService = {
       },
     };
   },
+  forgot:async ({username},ip)=>{
+    const user= await User.findOne({username})
+    if(!user) throw new AppError("Kullanıcı bulunamadı",404,"NOT_FOUND")
+
+    //EMAİL İLE ŞİFRE YEMİLEME TALEBİ
+
+    
+  },
 
   refreshTok: async (token) => {
     if (!token)
