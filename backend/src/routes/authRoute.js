@@ -14,7 +14,7 @@ router.post("/login",authLimiter,validate(loginSchema),AuthController.login)
 router.post("/refreshToken",authLimiter,AuthController.refresh)
 
 router.post("/logout",protectRoute,AuthController.logout)
-
+router.post("/forget",protectRoute,AuthController.forgotpassword)
 router.patch("/profil-tamamla", protectRoute, validate(profilTamamlaSchema), AuthController.profilTamamla)
 
 export default router
