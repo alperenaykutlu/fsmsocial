@@ -1,6 +1,6 @@
 # FSMSocial
 
-> **FSMSocial**, Fatih Sultan Mehmet Vakıf Üniversitesi öğrencileri ve kulüpleri için geliştirilmiş, ekip yönetimi, devre takibi ve sosyal etkileşimi bir arada sunan tam yığın (full-stack) mobil uygulama platformudur.
+> **FSMSocial**, Fatih Sultan Mehmet Ergin İzci Ocağı için geliştirilmiş, ekip yönetimi, devre takibi ve sosyal etkileşimi bir arada sunan tam yığın (full-stack) mobil uygulama platformudur.
 
 ---
 
